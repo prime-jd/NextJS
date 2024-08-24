@@ -7,15 +7,23 @@ export async function POST(request : Request){
 
     try {
         const {username, email, password} = await request.json();
-        const emailResponse =UserModel.findOne({
+        const verifyUserByUsername = await UserModel.findOne({
             username,
             isVerified : true
         })
-        if(!emailResponse.success){
+        if(verifyUserByUsername){
             return Response.json({
                 success : false,
-                message : emailResponse.message
+                message : "User already exist"
             },{status : 500})
+        }
+
+        const verifyUserByEmail = await UserModel.findOne({
+            email,
+            isVerified : true;
+        })
+        if(verifyUserByEmail){
+            
         }
         const createUser = UserModel.create({
             email,
